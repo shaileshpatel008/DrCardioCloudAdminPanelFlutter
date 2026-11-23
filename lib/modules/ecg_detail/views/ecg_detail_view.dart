@@ -170,7 +170,9 @@ class _Documents extends StatelessWidget {
   Widget build(BuildContext context) {
     final r = record;
     return Obx(() {
-      final tab = r.reportPdfUrl == null ? 0 : controller.docTab.value;
+      // Always read docTab: an Obx that reads no observable throws in GetX.
+      final selected = controller.docTab.value;
+      final tab = r.reportPdfUrl == null ? 0 : selected;
       final url = tab == 0 ? r.ecgPdfUrl : r.reportPdfUrl;
       return AppCard(
         padding: EdgeInsets.zero,
@@ -317,7 +319,8 @@ class _Measurements extends StatelessWidget {
     ];
     return AppCard(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Row(children: [SectionTitle('Measurements'), SizedBox(width: 10), NewTag()]),
+        // SectionTitle fills its row, so it can't sit inside another Row.
+        Row(children: [Text('Measurements', style: AppTextStyles.h3), const SizedBox(width: 10), const NewTag()]),
         const SizedBox(height: 14),
         if (m.isEmpty)
           Text('Measurements are added by the cardiologist when the report is written.', style: AppTextStyles.muted)

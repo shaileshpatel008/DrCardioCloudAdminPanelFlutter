@@ -213,8 +213,13 @@ class _StatusChoice extends StatelessWidget {
           child: Row(children: [
             Icon(icon, color: selected ? color : AppColors.subtle),
             const SizedBox(width: 10),
-            Text(label, style: AppTextStyles.body(size: 15, weight: FontWeight.w600, color: selected ? color : AppColors.body)),
-            const Spacer(),
+            Expanded(
+              child: Text(
+                label,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.body(size: 15, weight: FontWeight.w600, color: selected ? color : AppColors.body),
+              ),
+            ),
             AnimatedScale(
               scale: selected ? 1 : 0,
               duration: const Duration(milliseconds: 200),

@@ -1,0 +1,19 @@
+{
+  // Pick one in the Run and Debug panel (or the device bar), then press F5.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Dr. Cardio panel (live API)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart"
+    },
+    {
+      "name": "Dr. Cardio panel (DEMO, sample data)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": ["--dart-define=DEMO_MODE=true"]
+    }
+  ]
+}

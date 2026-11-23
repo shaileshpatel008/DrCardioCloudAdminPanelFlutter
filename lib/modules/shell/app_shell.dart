@@ -55,7 +55,10 @@ class AppShell extends StatelessWidget {
         child: Row(
           children: [
             Obx(() {
-              final collapsed = tablet || shell.sidebarCollapsed.value;
+              // Read the observable first: GetX requires every Obx build to
+              // read one, and `tablet || …` would skip it on tablets.
+              final userCollapsed = shell.sidebarCollapsed.value;
+              final collapsed = tablet || userCollapsed;
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 260),
                 curve: Curves.easeOutCubic,

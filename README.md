@@ -48,6 +48,22 @@ Android / iOS:
 flutter run
 ```
 
+Demo mode (sample data, no server needed; the sign-in screen then shows a
+"DEMO" box with one-tap roles):
+
+```bash
+flutter run -d chrome --dart-define=DEMO_MODE=true
+```
+
+- **VS Code:** pick "Dr. Cardio panel (DEMO, sample data)" in Run and Debug
+  (`.vscode/launch.json`).
+- **Android Studio:** Run → Edit Configurations → main.dart → Additional run
+  args: `--dart-define=DEMO_MODE=true`.
+
+Without the flag the app uses the live API. A quick way to tell which mode you
+are in: the demo shows a "DEMO" box on the sign-in page and a "DEMO" badge in
+the top bar, and its web URLs contain `/#/`.
+
 The API base URL defaults to `https://cloudecg.drcardio.in/api/v2`. Point it
 at a staging or local server with `--dart-define`:
 

@@ -61,6 +61,25 @@ class _BrandPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (compact) return _content(context, short: false);
+    // Desktop: the panel must never be taller than the window. On laptop-
+    // height windows the three feature cards are left out, and anything
+    // still too tall scrolls instead of overflowing.
+    return LayoutBuilder(builder: (context, box) {
+      final short = box.maxHeight < 860;
+      return Container(
+        color: AppColors.sidebar,
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: box.maxHeight),
+            child: _content(context, short: short),
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget _content(BuildContext context, {required bool short}) {
     final steps = [
       (Icons.monitor_heart_outlined, 'Record', '12-lead ECG at clinic, lab or ambulance'),
       (Icons.cloud_outlined, 'Store', 'Secure cloud storage and admin access'),
@@ -79,7 +98,7 @@ class _BrandPanel extends StatelessWidget {
                 style: AppTextStyles.body(size: 11, weight: FontWeight.w600, color: AppColors.brandSoft).copyWith(letterSpacing: 1.8)),
           ]),
         ]),
-        SizedBox(height: compact ? 22 : 56),
+        SizedBox(height: compact ? 22 : (short ? 36 : 56)),
         Text('Every heartbeat,\nreported faster.', style: AppTextStyles.display(compact ? 30 : 48, color: Colors.white).copyWith(height: 1.08))
             .animate()
             .fadeIn(duration: 500.ms)
@@ -93,8 +112,8 @@ class _BrandPanel extends StatelessWidget {
           ),
         ).animate().fadeIn(duration: 500.ms, delay: 120.ms),
         SizedBox(height: compact ? 14 : 30),
-        EcgTrace(height: compact ? 90 : 150, beats: compact ? 5 : 7),
-        if (!compact) ...[
+        EcgTrace(height: compact ? 90 : (short ? 120 : 150), beats: compact ? 5 : 7),
+        if (!compact && !short) ...[
           const SizedBox(height: 28),
           LayoutBuilder(builder: (context, c) {
             return Wrap(
@@ -128,7 +147,9 @@ class _BrandPanel extends StatelessWidget {
               ],
             );
           }),
-          const SizedBox(height: 40),
+        ],
+        if (!compact) ...[
+          SizedBox(height: short ? 28 : 40),
           Wrap(spacing: 24, runSpacing: 8, children: [
             for (final t in ['+91 96383 81155 / +91 96383 81666', 'www.drcardio.in', 'info@drcardio.in'])
               Text(t, style: AppTextStyles.body(size: 13, color: const Color(0xFFAEB4C0))),
